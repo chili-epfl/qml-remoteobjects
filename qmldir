@@ -1,0 +1,2 @@
+module QMLRemoteObjects
+plugin qmlremoteobjects
