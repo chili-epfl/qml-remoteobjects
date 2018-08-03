@@ -14,9 +14,34 @@ ApplicationWindow {
 
 
     RemoteObjectHost{
-        id: host
+        id: objectHost
 
-        Component.onCompleted: enableRemoting(robot, "MyRobot")
+        host: hostText.text
+        port: parseInt(portText.text)
+        listen: listenCheckbox.checked
+    }
+
+    Column{
+        GroupBox{
+            title: "Host"
+
+            Column{
+                TextField{
+                    id: hostText
+                    text: "0.0.0.0"
+                    placeholderText: "Host (e.g 0.0.0.0)"
+                }
+                TextField{
+                    id: portText
+                    text: "12345"
+                    placeholderText: "Port"
+                }
+                CheckBox{
+                    id: listenCheckbox
+                    text: "Listen?"
+                }
+            }
+        }
     }
 
     CelluloRobot{

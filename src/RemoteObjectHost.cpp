@@ -26,32 +26,46 @@
 
 #include <QHostAddress>
 
-namespace QMLRemoteObjects{
+namespace QMLRemoteObjects {
 
-RemoteObjectHost::RemoteObjectHost(QQuickItem* parent):
+RemoteObjectHost::RemoteObjectHost(QQuickItem* parent) :
     QQuickItem(parent)
-{
-    host = "0.0.0.0";
-    port = 12345;
-    setHostAndPort();
-}
+{}
 
 RemoteObjectHost::~RemoteObjectHost(){
-
+    if(remoteObjectHost)
+        remoteObjectHost->deleteLater();
 }
 
-void RemoteObjectHost::setHostAndPort(){
-    QString url("tcp://");
-    url.append(host);
-    url.append(":");
-    url.append(port);
-    remoteObjectHost.setHostUrl(QUrl(url));
+void RemoteObjectHost::setupHost(){
+    deleteHost();
+    remoteObjectHost = new QRemoteObjectHost(QUrl("tcp://" + host + ":" + QString::number(port)), this);
+}
+
+void RemoteObjectHost::deleteHost(){
+    if(remoteObjectHost)
+        delete remoteObjectHost;
+    remoteObjectHost = nullptr;
+}
+
+void RemoteObjectHost::setListening(bool enable){
+    if(enable && !listen){
+        setupHost();
+        listen = enable;
+        emit listeningChanged();
+    }
+    else if(!enable && listen){
+        deleteHost();
+        listen = enable;
+        emit listeningChanged();
+    }
 }
 
 void RemoteObjectHost::setHost(QString host){
     if(host != this->host){
         this->host = host;
-        setHostAndPort();
+        if(listen)
+            setupHost();
         emit hostChanged();
     }
 }
@@ -68,17 +82,28 @@ void RemoteObjectHost::setPort(int port){
 
     if(port != this->port){
         this->port = port;
-        setHostAndPort();
+        if(listen)
+            setupHost();
         emit portChanged();
     }
 }
 
 bool RemoteObjectHost::enableRemoting(QObject* object, QString const& name){
-    return remoteObjectHost.enableRemoting(object, name);
+    if(remoteObjectHost)
+        return remoteObjectHost->enableRemoting(object, name);
+    else{
+        qCritical() << "bool RemoteObjectHost::enableRemoting(): Must start listening first, doing nothing.";
+        return false;
+    }
 }
 
 bool RemoteObjectHost::disableRemoting(QObject* object){
-    return remoteObjectHost.disableRemoting(object);
+    if(remoteObjectHost)
+        return remoteObjectHost->disableRemoting(object);
+    else{
+        qCritical() << "bool RemoteObjectHost::disableRemoting(): Must start listening first, doing nothing.";
+        return false;
+    }
 }
 
 }

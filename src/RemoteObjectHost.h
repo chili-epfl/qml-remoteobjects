@@ -38,6 +38,9 @@ class RemoteObjectHost : public QQuickItem {
     Q_OBJECT
         /* *INDENT-ON* */
 
+    /** @brief Whether to listen for incoming node connections, default false */
+    Q_PROPERTY(bool listen READ isListening WRITE setListening NOTIFY listeningChanged)
+
     /** @brief Address to listen on, default "0.0.0.0" i.e any address */
     Q_PROPERTY(QString host READ getHost WRITE setHost NOTIFY hostChanged)
 
@@ -59,6 +62,20 @@ public:
      * @brief Destroys this TcpSocket
      */
     ~RemoteObjectHost();
+
+    /**
+     * @brief Gets whether the host is listening for incoming node connections
+     *
+     * @return Whether the socket is listening
+     */
+    bool isListening() const { return listen; }
+
+    /**
+     * @brief Enables/disables listening
+     *
+     * @param enable Whether to listen or close the host and stop listening
+     */
+    void setListening(bool enable);
 
     /**
      * @brief Gets the current host name
@@ -95,6 +112,11 @@ signals:
     /** @cond DO_NOT_DOCUMENT */
 
     /**
+     * @brief Emitted when host starts or stops listening
+     */
+    void listeningChanged();
+
+    /**
      * @brief Emitted when the host name changes
      */
     void hostChanged();
@@ -128,13 +150,19 @@ public slots:
 private:
 
     /**
-     * @brief Sets the internal QRemoteObjectHost's host and port to the current ones
+     * @brief Starts an internal QRemoteObjectHost and removes the old one if any
      */
-    void setHostAndPort();
+    void setupHost();
 
-    QRemoteObjectHost remoteObjectHost; ///< The low level socket
-    QString host;                       ///< Host address
-    int port;                           ///< Connection port
+    /**
+     * @brief Deletes the internal QRemoteObjectHost
+     */
+    void deleteHost();
+
+    QRemoteObjectHost* remoteObjectHost = nullptr; ///< The low level host
+    bool listen = false;                           ///< Whether to listen for incoming node connections
+    QString host = "0:0:0:0";                      ///< Host address
+    int port = 12345;                              ///< Connection port
 
 };
 
