@@ -41,7 +41,11 @@ RemoteObjectHost::~RemoteObjectHost(){
 }
 
 void RemoteObjectHost::setHostAndPort(){
-    remoteObjectHost.setHostUrl(QUrl("tcp://" + host + ":" + port));
+    QString url("tcp://");
+    url.append(host);
+    url.append(":");
+    url.append(port);
+    remoteObjectHost.setHostUrl(QUrl(url));
 }
 
 void RemoteObjectHost::setHost(QString host){

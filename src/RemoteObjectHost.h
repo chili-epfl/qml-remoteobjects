@@ -134,7 +134,7 @@ private:
 
     QRemoteObjectHost remoteObjectHost; ///< The low level socket
     QString host;                       ///< Host address
-    quint16 port;                       ///< Connection port
+    int port;                           ///< Connection port
 
 };
 
