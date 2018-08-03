@@ -17,8 +17,17 @@ ApplicationWindow {
         id: objectHost
 
         host: hostText.text
-        port: parseInt(portText.text)
+        port: parseInt(hostPortText.text)
         listen: listenCheckbox.checked
+    }
+
+    RemoteObjectClient{
+        id: objectClient
+
+        peer: peerText.text
+        port: parseInt(clientPortText.text)
+
+        onError: console.info(errorCode)
     }
 
     Column{
@@ -32,13 +41,68 @@ ApplicationWindow {
                     placeholderText: "Host (e.g 0.0.0.0)"
                 }
                 TextField{
-                    id: portText
+                    id: hostPortText
                     text: "12345"
                     placeholderText: "Port"
                 }
                 CheckBox{
                     id: listenCheckbox
                     text: "Listen?"
+                }
+                Button{
+                    text: "enable remoting"
+                    onClicked: objectHost.enableRemoting(test, "Test")
+                }
+                Button{
+                    text: "disable remoting"
+                    onClicked: objectHost.disableRemoting(test)
+                }
+
+
+
+
+
+
+                Text{
+                    id: test
+                    text: "Test"
+                }
+            }
+        }
+
+        GroupBox{
+            title: "Client"
+
+            Column{
+                TextField{
+                    id: peerText
+                    text: "127.0.0.1"
+                    placeholderText: "Peer (e.g 127.0.0.1)"
+                }
+                TextField{
+                    id: clientPortText
+                    text: "12345"
+                    placeholderText: "Port"
+                }
+                Button{
+                    id: connectButton
+                    text: "Connect"
+                    onClicked: console.log(objectClient.connectToNode())
+                }
+
+
+
+
+                Button{
+                    id: getObjButton
+                    text: "get obj"
+                    onClicked: objectClient.getObj()
+                }
+
+                Button{
+                    id: setTxtButton
+                    text: "set text"
+                    onClicked: objectClient.setText()
                 }
             }
         }

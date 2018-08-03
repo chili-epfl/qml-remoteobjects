@@ -59,7 +59,7 @@ public:
     RemoteObjectHost(QQuickItem* parent = 0);
 
     /**
-     * @brief Destroys this TcpSocket
+     * @brief Destroys this RemoteObjectClient
      */
     ~RemoteObjectHost();
 
@@ -161,7 +161,7 @@ private:
 
     QRemoteObjectHost* remoteObjectHost = nullptr; ///< The low level host
     bool listen = false;                           ///< Whether to listen for incoming node connections
-    QString host = "0:0:0:0";                      ///< Host address
+    QString host = "0.0.0.0";                      ///< Host address
     int port = 12345;                              ///< Connection port
 
 };

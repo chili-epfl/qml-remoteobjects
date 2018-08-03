@@ -1,7 +1,7 @@
 qml-remoteobjects
 =================
 
-qml-remoteobjects contains QML wrappers for Qt's Remote Objects module objects. It is tested with Qt 5.10.1 on the
+qml-remoteobjects contains QML wrappers for Qt's Remote Objects module objects. It is tested with Qt 5.11 on the
 following:
 
 - Ubuntu 18.04

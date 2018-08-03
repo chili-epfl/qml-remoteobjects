@@ -24,8 +24,6 @@
 
 #include "RemoteObjectHost.h"
 
-#include <QHostAddress>
-
 namespace QMLRemoteObjects {
 
 RemoteObjectHost::RemoteObjectHost(QQuickItem* parent) :

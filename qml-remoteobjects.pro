@@ -19,11 +19,13 @@ uri = QMLRemoteObjects
 
 HEADERS += \
     src/QMLRemoteObjectsPlugin.h \
-    src/RemoteObjectHost.h
+    src/RemoteObjectHost.h \
+    src/RemoteObjectClient.h
 
 SOURCES += \
     src/QMLRemoteObjectsPlugin.cpp \
-    src/RemoteObjectHost.cpp
+    src/RemoteObjectHost.cpp \
+    src/RemoteObjectClient.cpp
 
 OTHER_FILES += qmldir
 
