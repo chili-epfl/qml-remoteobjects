@@ -18,10 +18,12 @@ TARGET = $$qtLibraryTarget($$TARGET)
 uri = QMLRemoteObjects
 
 HEADERS += \
-    src/QMLRemoteObjectsPlugin.h
+    src/QMLRemoteObjectsPlugin.h \
+    src/RemoteObjectHost.h
 
 SOURCES += \
-    src/QMLRemoteObjectsPlugin.cpp
+    src/QMLRemoteObjectsPlugin.cpp \
+    src/RemoteObjectHost.cpp
 
 OTHER_FILES += qmldir
 

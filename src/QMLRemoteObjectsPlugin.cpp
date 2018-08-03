@@ -24,10 +24,12 @@
 
 #include "QMLRemoteObjectsPlugin.h"
 
+#include "RemoteObjectHost.h"
+
 namespace QMLRemoteObjects{
 
 void QMLRemoteObjectsPlugin::registerTypes(const char* uri){
-    //qmlRegisterType<TcpServer>(uri, 1, 0, "TcpServer");
+    qmlRegisterType<RemoteObjectHost>(uri, 1, 0, "RemoteObjectHost");
 }
 
 }
