@@ -26,12 +26,14 @@
 
 #include "RemoteObjectHost.h"
 #include "RemoteObjectClient.h"
+#include "RemoteObjectReplica.h"
 
 namespace QMLRemoteObjects{
 
 void QMLRemoteObjectsPlugin::registerTypes(const char* uri){
     qmlRegisterType<RemoteObjectHost>(uri, 1, 0, "RemoteObjectHost");
     qmlRegisterType<RemoteObjectClient>(uri, 1, 0, "RemoteObjectClient");
+    qmlRegisterType<RemoteObjectReplica>(uri, 1, 0, "RemoteObjectReplica");
 }
 
 }

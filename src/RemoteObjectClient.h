@@ -28,6 +28,8 @@
 #include <QQuickItem>
 #include <QRemoteObjectNode>
 
+#include "RemoteObjectReplica.h"
+
 namespace QMLRemoteObjects {
 
 /**
@@ -147,14 +149,13 @@ public slots:
      */
     bool connectToNode();
 
-
-
-
-
-
-
-    void getObj();
-    void setText();
+    /**
+     * @brief Gets a dynamic replica of the host side object with the given name
+     *
+     * @param  name Name of the object as given in RemoteObjectHost::enableRemoting()
+     * @return      Dynamic replica of the object
+     */
+    QMLRemoteObjects::RemoteObjectReplica* acquire(QString name);
 
 private slots:
 
@@ -171,20 +172,6 @@ private:
     QString peer = "127.0.0.1";         ///< Peer address
     int port = 12345;                   ///< Connection port
     int heartbeatInterval = 5000;       ///< Heartbeat interval in ms
-
-
-
-
-
-
-
-
-
-
-
-
-
-    QRemoteObjectDynamicReplica* replica;
 
 };
 

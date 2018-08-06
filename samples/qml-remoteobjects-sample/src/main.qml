@@ -18,6 +18,7 @@ ApplicationWindow {
 
         host: hostText.text
         port: parseInt(hostPortText.text)
+
         listen: listenCheckbox.checked
     }
 
@@ -96,7 +97,16 @@ ApplicationWindow {
                 Button{
                     id: getObjButton
                     text: "get obj"
-                    onClicked: objectClient.getObj()
+                    onClicked: {
+                        var repl = objectClient.acquire("Test");
+                        repl.replicaStateChanged.connect(
+                                    function(){
+                                        console.log("STATE_: " + repl.replicaState);
+                                    }
+                        );
+                        console.log("STATE: " + repl.replicaState);
+
+                    }
                 }
 
                 Button{

@@ -16,8 +16,8 @@
  */
 
 /**
- * @file RemoteObjectHost.cpp
- * @brief QML wrapper source for QRemoteObjectHost
+ * @file RemoteObjectClient.cpp
+ * @brief QML wrapper source for QRemoteObjectNode
  * @author Ayberk Özgür
  * @date 2018-08-02
  */
@@ -81,21 +81,17 @@ bool RemoteObjectClient::connectToNode(){
     return remoteObjectNode.connectToNode(QUrl(url));
 }
 
-
-
-
-
-
-
-
-void RemoteObjectClient::getObj(){
-    replica = remoteObjectNode.acquireDynamic("Test");
+QMLRemoteObjects::RemoteObjectReplica* RemoteObjectClient::acquire(QString name){
+    QRemoteObjectDynamicReplica* dyreplica = remoteObjectNode.acquireDynamic(name);
+    RemoteObjectReplica* replica = new RemoteObjectReplica();
+    replica->setReplica(dyreplica);
+    return replica;
 }
 
-void RemoteObjectClient::setText(){
+/*void RemoteObjectClient::setText(){
     const QMetaObject* metaObject = replica->metaObject();
     QMetaProperty textProp = metaObject->property(metaObject->indexOfProperty("text"));
     textProp.write(replica, "asdasdasd");
-}
+}*/
 
 }
