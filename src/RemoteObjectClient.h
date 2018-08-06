@@ -44,6 +44,9 @@ class RemoteObjectClient : public QQuickItem {
     /** @brief Port to connect to, or port of the already open remote connection, must be in [0,65535], default 12345 */
     Q_PROPERTY(int port READ getPort WRITE setPort NOTIFY portChanged)
 
+    /** @brief Detects whether the connection is disrupted if the peer is unresponsive for more than this many milliseconds, default 5000 */
+    Q_PROPERTY(int heartbeatInterval READ getHeartbeatInterval WRITE setHeartbeatInterval NOTIFY heartbeatIntervalChanged)
+
 public:
 
     /** @cond DO_NOT_DOCUMENT */
@@ -88,6 +91,20 @@ public:
      */
     void setPort(int port);
 
+    /**
+     * @brief Gets the current heartbeat interval
+     *
+     * @return Current heartbeat interval
+     */
+    int getHeartbeatInterval() const { return heartbeatInterval; }
+
+    /**
+     * @brief Sets the heartbeat interval
+     *
+     * @param heartbeatInterval The new heartbeatInterval, must be larger than 0, disables if set to 0
+     */
+    void setHeartbeatInterval(int heartbeatInterval);
+
     /** @endcond */
 
 signals:
@@ -104,6 +121,11 @@ signals:
      */
     void portChanged();
 
+    /**
+     * @brief Emitted whe the heartbeat interval changes
+     */
+    void heartbeatIntervalChanged();
+
     /** @endcond */
 
     /**
@@ -118,7 +140,10 @@ public slots:
     /**
      * @brief Initiates connection to the peer
      *
-     * @return Whether successfully initiated connection
+     * Warning, as of Qt 5.11.0, it looks like it is possible to try to connect to a nonexistent peer, and there seems
+     * to be no signal/error generated when doing so.
+     *
+     * @return Whether successfully initiated connection (seems to return true always)
      */
     bool connectToNode();
 
@@ -142,9 +167,10 @@ private slots:
 
 private:
 
-    QRemoteObjectNode remoteObjectNode;            ///< The low level client
-    QString peer = "127.0.0.1";                    ///< Peer address
-    int port = 12345;                              ///< Connection port
+    QRemoteObjectNode remoteObjectNode; ///< The low level client
+    QString peer = "127.0.0.1";         ///< Peer address
+    int port = 12345;                   ///< Connection port
+    int heartbeatInterval = 5000;       ///< Heartbeat interval in ms
 
 
 

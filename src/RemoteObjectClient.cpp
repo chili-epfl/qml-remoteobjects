@@ -29,12 +29,14 @@ namespace QMLRemoteObjects {
 RemoteObjectClient::RemoteObjectClient(QQuickItem* parent) : QQuickItem(parent)
 {
     connect(&remoteObjectNode, SIGNAL(error(QRemoteObjectNode::ErrorCode)), this, SLOT(processError(QRemoteObjectNode::ErrorCode)));
+    remoteObjectNode.setHeartbeatInterval(heartbeatInterval);
 }
 
 RemoteObjectClient::~RemoteObjectClient(){
 }
 
 void RemoteObjectClient::processError(QRemoteObjectNode::ErrorCode errorCode){
+    //TODO: DOESN'T WORK YET AS OF QT 5.11.0??
     emit error(QMetaEnum::fromType<QRemoteObjectNode::ErrorCode>().valueToKey(errorCode));
 }
 
@@ -61,9 +63,22 @@ void RemoteObjectClient::setPort(int port){
     }
 }
 
+void RemoteObjectClient::setHeartbeatInterval(int heartbeatInterval){
+    if(heartbeatInterval < 0){
+        qWarning() << "RemoteObjectClient::setHeartbeatInterval(): Heartbeat interval given was negative, setting to 0 to disable.";
+        heartbeatInterval = 0;
+    }
+
+    if(heartbeatInterval != this->heartbeatInterval){
+        this->heartbeatInterval = heartbeatInterval;
+        emit heartbeatIntervalChanged();
+    }
+}
+
 bool RemoteObjectClient::connectToNode(){
-    qDebug() << "tcp://" + peer + ":" + QString::number(port);
-    return remoteObjectNode.connectToNode(QUrl("tcp://" + peer + ":" + QString::number(port)));
+    QString url = "tcp://" + peer + ":" + QString::number(port);
+    qDebug() << "RemoteObjectClient::connectToNode(): Connecting to node at: " << url;
+    return remoteObjectNode.connectToNode(QUrl(url));
 }
 
 
