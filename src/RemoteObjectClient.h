@@ -155,7 +155,7 @@ public slots:
      * @param  name Name of the object as given in RemoteObjectHost::enableRemoting()
      * @return      Dynamic replica of the object
      */
-    QMLRemoteObjects::RemoteObjectReplica* acquire(QString name);
+     QMLRemoteObjects::RemoteObjectReplica* acquire(QString name);
 
 private slots:
 

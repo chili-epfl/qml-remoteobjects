@@ -62,11 +62,19 @@ ApplicationWindow {
 
 
 
+                Button{
+                    text: test.testProp
+                    onClicked: test.testSignal()
+                }
 
-
-                Text{
+                QtObject{
                     id: test
-                    text: "Test"
+
+                    //text: "QWEQWEQWE"
+
+                    property string testProp: "DENEME"
+
+                    signal testSignal()
                 }
             }
         }
@@ -88,37 +96,24 @@ ApplicationWindow {
                 Button{
                     id: connectButton
                     text: "Connect"
-                    onClicked: console.log(objectClient.connectToNode())
-                }
+                    onClicked: objectClient.connectToNode()
 
+                    property var repl: objectClient.acquire("Test")
 
+                    Connections{
+                        target: connectButton.repl
 
-
-                Button{
-                    id: getObjButton
-                    text: "get obj"
-                    onClicked: {
-                        var repl = objectClient.acquire("Test");
-                        repl.replicaStateChanged.connect(
-                                    function(){
-                                        console.log("STATE_: " + repl.replicaState);
-                                    }
-                        );
-                        console.log("STATE: " + repl.replicaState);
-
+                        onInitialized: connectButton.repl.testProp = "QWEQWEQWE"
+                        //testPropChanged.connect(
+                        //                   function(){ console.log("testSignal emitted!!!!!!"); }
+                        //                   )
                     }
-                }
-
-                Button{
-                    id: setTxtButton
-                    text: "set text"
-                    onClicked: objectClient.setText()
                 }
             }
         }
     }
 
-    CelluloRobot{
+    CelluloBluetooth{
         id: robot
     }
 }

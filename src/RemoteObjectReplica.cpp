@@ -50,10 +50,36 @@ void RemoteObjectReplica::setReplica(QRemoteObjectDynamicReplica* replica){
     else{
         this->replica = replica;
 
+        connect(replica, SIGNAL(initialized()), this, SIGNAL(initialized()));
         connect(replica, SIGNAL(stateChanged(QRemoteObjectReplica::State, QRemoteObjectReplica::State)), this, SIGNAL(replicaStateChanged()));
-
         emit replicaStateChanged();
+
+        connect(replica, SIGNAL(initialized()), this, SLOT(enumerateAll()));
     }
+}
+
+void RemoteObjectReplica::enumerateAll(){
+    const QMetaObject* metaObject = replica->metaObject();
+
+    qDebug() << "";
+    qDebug() << "Enumerating " << metaObject->className() << ":";
+
+    qDebug() << "";
+    qDebug() << "********************************";
+    qDebug() << "Properties:";
+    for(int i=0;i<metaObject->propertyCount();i++){
+        QMetaProperty prop = metaObject->property(i);
+        qDebug() << prop.typeName() << " " << prop.name();
+    }
+
+    qDebug() << "";
+    qDebug() << "********************************";
+    qDebug() << "Methods:";
+    for(int i=0;i<metaObject->methodCount();i++){
+        QMetaMethod method = metaObject->method(i);
+        qDebug() << method.methodType() << " - " << method.returnType() << " " << method.name() << " " << method.parameterTypes();
+    }
+    qDebug() << "";
 }
 
 }

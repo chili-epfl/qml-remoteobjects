@@ -26,6 +26,7 @@
 #define REMOTEOBJECTREPLICA_H
 
 #include <QQuickItem>
+#include <QQmlPropertyMap>
 #include <QRemoteObjectDynamicReplica>
 
 namespace QMLRemoteObjects {
@@ -77,6 +78,11 @@ signals:
 
     /** @endcond */
 
+    /**
+     * @brief Emitted when the replica is initialized, i.e API is synchronized with the source object
+     */
+    void initialized();
+
 public slots:
 
     /**
@@ -87,6 +93,8 @@ public slots:
     void setReplica(QRemoteObjectDynamicReplica* replica);
 
 private slots:
+
+    void enumerateAll();
 
 private:
 

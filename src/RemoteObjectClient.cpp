@@ -89,9 +89,7 @@ QMLRemoteObjects::RemoteObjectReplica* RemoteObjectClient::acquire(QString name)
 }
 
 /*void RemoteObjectClient::setText(){
-    const QMetaObject* metaObject = replica->metaObject();
-    QMetaProperty textProp = metaObject->property(metaObject->indexOfProperty("text"));
-    textProp.write(replica, "asdasdasd");
+
 }*/
 
 }
